@@ -17,6 +17,7 @@ In a real factory, normal operating data is abundant but fault data is rare and 
 Dataset
 CWRU Bearing Dataset — Case Western Reserve University
 File used: **feature_time_48k_2048_load_1.csv**
+|---|---|---|
 | Class | Samples | Type |
 | Normal_1 | 230 | Healthy bearing |
 | Ball_007/014/021 | 690 | Ball fault — 3 severities |
@@ -53,6 +54,7 @@ The decoder must reconstruct continuous values ranging from roughly -3 to 3 afte
 ---
 
 Training Setup
+|---|---|
 | Component | Value |
 | Loss Function | MSELoss (Mean Squared Error) |
 | Optimizer | Adam |
@@ -66,6 +68,7 @@ Loss dropped consistently from 1.0156 to 0.6079 over 50 epochs.
 
 ## Anomaly Detection Results
 **Threshold**: mean normal error + 2 × standard deviation of normal errors
+|---|---|
 | Data | Mean Reconstruction Error |
 | Normal (validation) | 0.6644 | 
 | Faulty (all fault classes) | 3,768.1448 |
