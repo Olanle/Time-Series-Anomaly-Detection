@@ -7,16 +7,17 @@ Training a PyTorch autoencoder on normal bearing vibration data to detect mechan
 **What is a Bearing?**
 A bearing is a mechanical component found in almost every rotating machine — motors, pumps, conveyor belts, turbines, and fans. Its job is to reduce friction between moving parts and support rotational motion. When a bearing starts to fail it develops small cracks, pits, or wear on its surface that create distinctive vibration patterns detectable by sensors.
 
-By the time you can hear or feel a bearing failure, the damage is often already severe and costly. The goal of this project is to detect that failure weeks before it happens — saving thousands of dollars in unplanned downtime and equipment damage.
+By the time you can hear or feel a bearing failure, the damage is often already severe and costly. The goal of this project is to detect that failure weeks before it happens - saving thousands of dollars in unplanned downtime and equipment damage.
 
 **Why Anomaly Detection?**
-In a real factory, normal operating data is abundant but fault data is rare and unpredictable. Training a classifier on known fault types would miss any new, unseen fault pattern. An autoencoder trained only on normal data learns what normal looks like — anything that deviates gets flagged, whether it's a known fault type or a completely new one.
+In a real factory, normal operating data is abundant but fault data is rare and unpredictable. Training a classifier on known fault types would miss any new, unseen fault pattern. An autoencoder trained only on normal data learns what normal looks like - anything that deviates gets flagged, whether it's a known fault type or a completely new one.
 
 ---
 
 Dataset
 CWRU Bearing Dataset — Case Western Reserve University
 File used: **feature_time_48k_2048_load_1.csv**
+
 |---|---|---|
 | Class | Samples | Type |
 | Normal_1 | 230 | Healthy bearing |
@@ -26,6 +27,7 @@ File used: **feature_time_48k_2048_load_1.csv**
 | Total | 2,300 | --- |
 
 9 time-domain features per sample: max, min, mean, standard deviation, RMS, skewness, kurtosis, crest factor, form factor.
+
 **Data split:**
 
 - Training: 184 normal samples (80%)
@@ -41,7 +43,8 @@ This approach works in deployment because normal data is always available from d
 
 ---
 
-Model Architecture - Autoencoder
+## Model Architecture - Autoencoder
+
 Input (9 features)
 → Encoder: 9 → 16 → 8 → 4  (with ReLU)
 → Bottleneck: 4 features
@@ -53,7 +56,8 @@ The decoder must reconstruct continuous values ranging from roughly -3 to 3 afte
 
 ---
 
-Training Setup
+## Training Setup
+
 |---|---|
 | Component | Value |
 | Loss Function | MSELoss (Mean Squared Error) |
@@ -62,12 +66,14 @@ Training Setup
 | Epochs | 50 |
 | Training Data | Normal samples only |
 | Device | CUDA |
+
 Loss dropped consistently from 1.0156 to 0.6079 over 50 epochs.
 
 ---
 
 ## Anomaly Detection Results
 **Threshold**: mean normal error + 2 × standard deviation of normal errors
+
 |---|---|
 | Data | Mean Reconstruction Error |
 | Normal (validation) | 0.6644 | 
@@ -92,8 +98,10 @@ The scale difference alone tells the story — faulty signals produce reconstruc
 
 Anomaly detection is more powerful than classification for industrial fault detection — it catches unknown fault types that a classifier would miss
 Autoencoders learn by reconstruction — training target is the input itself, there are no labels
+
 The final decoder layer must have no activation function — it needs to output any real number to reconstruct scaled features accurately
 Fit the scaler only on normal training data — fault data must be transformed separately to avoid leakage
+
 A reconstruction error gap of 5,000x between normal and faulty signals shows the autoencoder has genuinely learned the structure of normal vibration
 100% fault detection in 50 epochs demonstrates that simple architectures can solve real industrial problems when the right approach is chosen
 
