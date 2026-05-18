@@ -1,4 +1,4 @@
-# Project 6 — Time Series Anomaly Detection (Bearing Fault Detection)
+# Time Series Anomaly Detection (Bearing Fault Detection)
 
 Training a PyTorch autoencoder on normal bearing vibration data to detect mechanical faults through reconstruction error analysis.
 
